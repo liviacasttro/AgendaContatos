@@ -13,13 +13,12 @@ public class Principal {
         Persistencia.carregarContatos(contatos);
         
         int opcao;
-        boolean continuar = true;
         
         Scanner sc = new Scanner(System.in);
         
         Uteis.mostraInicializacao(); 
 
-        while (continuar) {
+        while (true) {
         	Uteis.mostraMenu();
             opcao = Uteis.selecionaOpcao(sc);
 
@@ -31,12 +30,13 @@ public class Principal {
                 case 5-> Agenda.excluir(sc, contatos);          	
                 case 6-> {
                 	Persistencia.salvarContatos(contatos);
-                	continuar = Uteis.sair();
+                	Uteis.sair();
+                	sc.close();
+                	return;
                 }
                 case 7-> Uteis.sobre();
-                default -> System.out.println("Opção inválida!");
+                default -> System.out.println("Opção Inválida!");
             }
         }
-        sc.close();
     }	
 }

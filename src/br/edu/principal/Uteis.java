@@ -8,7 +8,7 @@ public class Uteis {
 	public static void mostraInicializacao() {
     	System.out.println("==========================");
         System.out.println("     AGENDA DE CONTATOS    ");
-        System.out.println("          v3.2.0           ");
+        System.out.println("          v3.3.0           ");
         System.out.println("==========================");
         System.out.println("Bem-vindo!");
     }
@@ -32,9 +32,8 @@ public class Uteis {
         return opc;
     }
 
-    public static boolean sair() {
+    public static void sair() {
     	System.out.println("Saindo da Agenda de Contatos...");
-        return false;
     }
     
     public static void sobre() {

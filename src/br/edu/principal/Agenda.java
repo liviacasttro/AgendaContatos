@@ -18,11 +18,7 @@ public class Agenda {
         System.out.print("Digite o email: ");
         String email = sc.nextLine();
 
-        Contato contato = new Contato();
-
-        contato.nome = nome;
-        contato.celular = celular;
-        contato.email = email;
+        Contato contato = new Contato(nome, celular, email);
 
         contatos.add(contato);
 
@@ -42,9 +38,9 @@ public class Agenda {
         	for (Contato contato : contatos) {
 
                 System.out.println("--------------------------");
-                System.out.println("Nome: " + contato.nome);
-                System.out.println("Celular: " + contato.celular);
-                System.out.println("Email: " + contato.email);
+                System.out.println("Nome: " + contato.getNome());
+                System.out.println("Celular: " + contato.getCelular());
+                System.out.println("Email: " + contato.getEmail());
             }
         }
     }
@@ -60,12 +56,12 @@ public class Agenda {
 
         for (Contato contato : contatos) {
 
-            if (contato.nome.equalsIgnoreCase(nomeBusca)) {
+            if (contato.getNome().equalsIgnoreCase(nomeBusca)) {
 
-                System.out.println("--------------------------");
-                System.out.println("Nome: " + contato.nome);
-                System.out.println("Celular: " + contato.celular);
-                System.out.println("Email: " + contato.email);
+            	System.out.println("--------------------------");
+                System.out.println("Nome: " + contato.getNome());
+                System.out.println("Celular: " + contato.getCelular());
+                System.out.println("Email: " + contato.getEmail());
 
                 encontrado = true;
             }
@@ -87,7 +83,7 @@ public class Agenda {
 
         for (Contato contato : contatos) {
 
-            if (contato.nome.equalsIgnoreCase(nomeProcurado)) {
+            if (contato.getNome().equalsIgnoreCase(nomeProcurado)) {
                 contatoEncontrado = contato;
             }
         }
@@ -103,9 +99,9 @@ public class Agenda {
             System.out.print("Digite o novo email: ");
             String novoEmail = sc.nextLine();
 
-            contatoEncontrado.nome = novoNome;
-            contatoEncontrado.celular = novoCelular;
-            contatoEncontrado.email = novoEmail;
+            contatoEncontrado.setNome(novoNome);
+            contatoEncontrado.setCelular(novoCelular);
+            contatoEncontrado.setEmail(novoEmail);
 
             System.out.println("Contato alterado com sucesso!");
         } else {
@@ -120,12 +116,11 @@ public class Agenda {
     	System.out.print("Digite o nome do contato: ");
         String nomeExcluir = sc.nextLine();
 
-        boolean excluido = false;
         Contato contatoExcluir = null;
 
         for (Contato contato : contatos) {
 
-            if (contato.nome.equalsIgnoreCase(nomeExcluir)) {
+            if (contato.getNome().equalsIgnoreCase(nomeExcluir)) {
                 contatoExcluir = contato;
             }
         }
