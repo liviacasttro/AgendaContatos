@@ -7,6 +7,12 @@ import java.util.Scanner;
 public class Principal {
 	
 	public static void main(String[] args) {
+		
+		Contato contato1 = new Contato();
+
+		contato1.nome = "Arthur Dent";
+		contato1.celular = "4242-4242";
+		contato1.email = "arthur@galaxy.com";
 
 
         List<String> nomes = new ArrayList<>();
@@ -19,11 +25,11 @@ public class Principal {
         
         Scanner sc = new Scanner(System.in);
         
-        uteis.mostraInicializacao(); 
+        Uteis.mostraInicializacao(); 
 
         while (continuar) {
-        	uteis.mostraMenu();
-            opcao = uteis.selecionaOpcao(sc);
+        	Uteis.mostraMenu();
+            opcao = Uteis.selecionaOpcao(sc);
 
             switch (opcao) {
                 case 1-> Agenda.adicionar(sc, nomes, celulares, emails);           	
@@ -33,9 +39,9 @@ public class Principal {
                 case 5-> Agenda.excluir(sc, nomes, celulares, emails);          	
                 case 6-> {
                 	Persistencia.salvarContatos(nomes, celulares, emails);
-                	continuar = uteis.sair();
+                	continuar = Uteis.sair();
                 }
-                case 7-> uteis.sobre();
+                case 7-> Uteis.sobre();
                 default -> System.out.println("Opção inválida!");
             }
         }
