@@ -3,14 +3,29 @@ package br.edu.visao;
 import java.util.List;
 import java.util.Scanner;
 
+import br.edu.controle.AgendaController;
 import br.edu.modelo.Contato;
 
 public class AgendaView {
 
     private Scanner sc;
+    private AgendaController controller;
 
     public AgendaView(Scanner sc) {
         this.sc = sc;
+    }
+    
+    public AgendaView(Scanner sc, AgendaController controller) {
+        this.sc = sc;
+        this.controller = controller;
+    }
+    
+    public void mostrarInicializacao() {
+
+        System.out.println("================================");
+        System.out.println("       AGENDA DE CONTATOS       ");
+        System.out.println("================================");
+        System.out.println("         Versão: V5.1.0          ");
     }
 
     public void mostrarMenu() {
@@ -33,6 +48,130 @@ public class AgendaView {
         sc.nextLine();
 
         return opcao;
+    }
+    
+    public void iniciar() {
+
+        mostrarInicializacao();
+        int opcao;
+
+        do {
+            mostrarMenu();
+            opcao = selecionarOpcao();
+
+            switch (opcao) {
+
+                case 1 -> executarInclusao();
+                case 2 -> executarListagem();
+                case 3 -> executarPesquisa();
+                case 4 -> executarAtualizacao();
+                case 5 -> executarExclusao();
+                case 6 -> {if (executarSaida()) return;}
+                case 7 -> mostrarSobre();
+                default -> mostrarMensagem("Opção inválida!");
+            }
+
+        } while (true);
+    }
+    
+    public void mostrarEncerramento() {
+
+        System.out.println();
+        System.out.println("Encerrando a Agenda de Contatos...");
+        System.out.println("Até a próxima!");
+    }
+    
+    public void mostrarSobre() {
+
+        System.out.println();
+        System.out.println("=== SOBRE O SISTEMA ===");
+        System.out.println("Aplicação: Agenda de Contatos");
+        System.out.println("Versão: V5.1.0");
+        System.out.println("Linguagem: Java");
+        System.out.println("Arquitetura: MVC");
+        System.out.println("Persistência: DAO / Arquivo TXT");
+    }
+    
+    public void executarInclusao() {
+
+        Contato contato = lerContato();
+
+        controller.adicionarContato(contato);
+
+        mostrarMensagem("Contato adicionado com sucesso!");
+    }
+    
+    public void executarListagem() {
+
+        List<Contato> contatos = controller.listarContatos();
+
+        mostrarContatos(contatos);
+    }
+
+    public void executarPesquisa() {
+
+        String nome = lerNomePesquisa();
+
+        Contato contato = controller.pesquisarContato(nome);
+
+        mostrarResultadoPesquisa(contato);
+    }
+    
+    public void executarAtualizacao() {
+
+        String nome = lerNomePesquisa();
+
+        Contato contato = controller.pesquisarContato(nome);
+
+        if (contato == null) {
+            mostrarMensagem("Contato não encontrado!");
+            return;
+        }
+
+        mostrarResultadoPesquisa(contato);
+
+        Contato novosDados = lerDadosAtualizacao();
+
+        boolean atualizado = controller.atualizarContato(
+                nome,
+                novosDados.getNome(),
+                novosDados.getCelular(),
+                novosDados.getEmail()
+        );
+
+        if (atualizado) {
+            mostrarMensagem("Contato atualizado com sucesso!");
+        } else {
+            mostrarMensagem("Não foi possível atualizar o contato.");
+        }
+    }
+    
+    public void executarExclusao() {
+
+        String nome = lerNomePesquisa();
+
+        Contato contato = controller.pesquisarContato(nome);
+
+        if (contato == null) {
+            mostrarMensagem("Contato não encontrado!");
+            return;
+        }
+
+        mostrarResultadoPesquisa(contato);
+
+        if (confirmarExclusao()) {
+
+            boolean excluido = controller.excluirContato(nome);
+
+            if (excluido) {
+                mostrarMensagem("Contato excluído com sucesso!");
+            } else {
+                mostrarMensagem("Não foi possível excluir o contato.");
+            }
+
+        } else {
+            mostrarMensagem("Exclusão cancelada.");
+        }
     }
     
     public Contato lerContato() {
@@ -115,5 +254,20 @@ public class AgendaView {
         String resposta = sc.nextLine();
 
         return resposta.equalsIgnoreCase("S");
+    }
+    
+    public boolean executarSaida() {
+
+        boolean salvou = controller.salvarContatos();
+
+        if (salvou) {
+            mostrarEncerramento();
+            return true;
+        }
+
+        mostrarMensagem("Erro ao salvar os contatos!");
+        mostrarMensagem("A aplicação permanecerá em execução.");
+
+        return false;
     }
 }

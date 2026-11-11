@@ -15,16 +15,12 @@ public class AgendaController {
         this.dao = dao;
     }
     
-    public List<Contato> listarContatos() {
-    	return contatos;
-    }
-    
-    public boolean salvarContatos() {
-        return dao.salvarContatos(contatos);
-    }
-    
     public void adicionarContato(Contato contato) {
         contatos.add(contato);
+    }
+    
+    public List<Contato> listarContatos() {
+    	return contatos;
     }
     
     public Contato pesquisarContato(String nome) {
@@ -43,9 +39,7 @@ public class AgendaController {
 
         Contato contato = pesquisarContato(nome);
 
-        if (contato == null) {
-            return false;
-        }
+        if (contato == null) return false;
 
         contato.setNome(novoNome);
         contato.setCelular(novoCelular);
@@ -58,10 +52,12 @@ public class AgendaController {
 
         Contato contato = pesquisarContato(nome);
 
-        if (contato == null) {
-            return false;
-        }
+        if (contato == null) return false;
 
         return contatos.remove(contato);
+    }
+    
+    public boolean salvarContatos() {
+        return dao.salvarContatos(contatos);
     }
 }
