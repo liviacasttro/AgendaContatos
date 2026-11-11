@@ -15,8 +15,10 @@ public class Principal {
 	public static void main(String[] args) {
 
 		List<Contato> contatos = new ArrayList<>();
+		
+		ContatoDAO dao = new ContatoDAO("contatos.txt");
 
-		ContatoDAO.carregarContatos(contatos);
+		dao.carregarContatos(contatos);
         
         int opcao;
         
@@ -25,8 +27,10 @@ public class Principal {
         Uteis.mostraInicializacao(); 
 
         while (true) {
+        	
         	Uteis.mostraMenu();
-            opcao = Uteis.selecionaOpcao(sc);
+            
+        	opcao = Uteis.selecionaOpcao(sc);
 
             switch (opcao) {
                 case 1-> Agenda.adicionar(sc, contatos);           	
@@ -35,10 +39,16 @@ public class Principal {
                 case 4-> Agenda.atualizar(sc, contatos);           	
                 case 5-> Agenda.excluir(sc, contatos);          	
                 case 6-> {
-                	ContatoDAO.salvarContatos(contatos);
-                	Uteis.sair();
-                	sc.close();
-                	return;
+                	boolean salvou = dao.salvarContatos(contatos);
+                    if (salvou) {
+                        Uteis.sair();
+                        sc.close();
+                        return;
+                    }
+                    else {
+                        System.out.println("Não foi possível salvar os contatos.");
+                        System.out.println("A aplicação continuará em execução.");
+                    }
                 }
                 case 7-> Uteis.sobre();
                 default -> System.out.println("Opção Inválida!");
